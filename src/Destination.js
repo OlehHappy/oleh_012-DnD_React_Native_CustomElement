@@ -1,10 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import ItemTypes from './ItemTypes';
+import update from 'react/lib/update'
 import { DropTarget } from 'react-dnd';
+import ItemTypes from './ItemTypes';
+import Source from './Source';
 
 const style = {
-  height: '12rem',
-  width: '12rem',
+  height: '22rem',
+  width: '22rem',
   marginRight: '1.5rem',
   marginBottom: '1.5rem',
   color: 'white',
@@ -16,8 +18,14 @@ const style = {
 };
 
 const destinationTarget = {
-  drop() {
-    return { name: 'Destination' };
+  drop(props, monitor, component) {
+    const item = monitor.getItem();
+    const delta = monitor.getDifferenceFromInitialOffset();
+    const left = Math.round(item.left + delta.x);
+    const top = Math.round(item.top + delta.y);
+
+    console.log(left);
+    // return { name: 'Destination' };
   }
 };
 
@@ -32,6 +40,9 @@ export default class Destination extends Component {
     const { canDrop, isOver, connectDropTarget } = this.props;
     const isActive = canDrop && isOver;
 
+    let ourLeft = 20;
+    let ourTop = 30;
+
     let backgroundColor = '#222';
     if (isActive) {
       backgroundColor = 'darkgreen';
@@ -40,11 +51,16 @@ export default class Destination extends Component {
     }
 
     return connectDropTarget(
-      <div style={{ ...style, backgroundColor }}>
-        {isActive ?
-          'Release to drop' :
-          'Drag a box here'
-        }
+      <div>
+        <div style={{ ...style, backgroundColor }}>
+          {isActive ?
+            'Release to drop' :
+            'Drag a box here'
+          }
+        </div>
+        <div>
+          <Source name="OurBox" left = {ourLeft} top = {ourTop} />
+        </div>
       </div>
     );
   }
@@ -55,3 +71,5 @@ export default DropTarget(ItemTypes.Item, destinationTarget, (connect, monitor) 
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop()
 }))(Destination);
+
+// export default DragDropContext(HTML5Backend)(Destination);

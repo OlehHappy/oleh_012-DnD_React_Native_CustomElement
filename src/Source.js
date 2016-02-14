@@ -3,31 +3,25 @@ import ItemTypes from './ItemTypes';
 import { DragSource } from 'react-dnd';
 
 const style = {
-  border: '1px dashed gray',
-  backgroundColor: 'white',
-  padding: '0.5rem 1rem',
-  marginRight: '1.5rem',
-  marginBottom: '1.5rem',
+  position: 'absolute',
   cursor: 'move',
-  float: 'left'
 };
 
 const imgSource = {
   beginDrag(props) {
-    return {
-      name: props.name
-    };
+    const {name, left, top } = props;
+    return {name, left, top };
   },
 
   endDrag(props, monitor) {
     const item = monitor.getItem();
-    const dropResult = monitor.getDropResult();
-
-    if (dropResult) {
-      window.alert( // eslint-disable-line no-alert
-        `You dropped ${item.name} into ${dropResult.name}!`
-      );
-    }
+    // const dropResult = monitor.getDropResult();
+    //
+    // if (dropResult) {
+    //   window.alert( // eslint-disable-line no-alert
+    //     `You dropped ${item.name} into ${dropResult.name}!`
+    //   );
+    // }
   }
 };
 
@@ -35,19 +29,17 @@ export default class Source extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    left: PropTypes.number.isRequired,
+    top: PropTypes.number.isRequired
   };
 
   render() {
-    const { isDragging, connectDragSource } = this.props;
-    const { name } = this.props;
-    const opacity = isDragging ? 0.4 : 1;
+    const { isDragging, connectDragSource, left, top } = this.props;
 
     return (
       connectDragSource(
-        <div style={{ ...style, opacity }}>
-          {name}
-        </div>
+        <img src = "./src/img/test1-banner.png" style = {{ ...style, left, top }} />
       )
     );
   }
