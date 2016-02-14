@@ -9,8 +9,8 @@ const style = {
 
 const imgSource = {
   beginDrag(props) {
-    const {name, left, top } = props;
-    return {name, left, top };
+    const {id, src, left, top } = props;
+    return {id, src, left, top };
   },
 
   endDrag(props, monitor) {
@@ -28,18 +28,18 @@ const imgSource = {
 export default class Source extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    name: PropTypes.string.isRequired,
+    src: PropTypes.string.isRequired,
+    id: PropTypes.any.isRequired,
     left: PropTypes.number.isRequired,
     top: PropTypes.number.isRequired
   };
 
   render() {
-    const { isDragging, connectDragSource, left, top } = this.props;
+    const { connectDragSource, id, src, left, top } = this.props;
 
     return (
       connectDragSource(
-        <img src = "./src/img/test1-banner.png" style = {{ ...style, left, top }} />
+        <img id = {{id}} src = {{src}} style = {{ ...style, left, top }} />
       )
     );
   }

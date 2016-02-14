@@ -36,12 +36,24 @@ export default class Destination extends Component {
     canDrop: PropTypes.bool.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      imgages: {
+        'a': { top: 20, left: 80, src: "./src/img/test1-banner.png"},
+        'b': { top: 180, left: 20, src: "./src/img/test2-banner.png"}
+      }
+    };
+  }
+
   render() {
     const { canDrop, isOver, connectDropTarget } = this.props;
     const isActive = canDrop && isOver;
 
     let ourLeft = 20;
     let ourTop = 30;
+    let ourId = 'first';
+    let ourSrc = './src/img/test1-banner.png';
 
     let backgroundColor = '#222';
     if (isActive) {
@@ -59,7 +71,7 @@ export default class Destination extends Component {
           }
         </div>
         <div>
-          <Source name="OurBox" left = {ourLeft} top = {ourTop} />
+          <Source id = {ourId} src = {ourSrc} left = {ourLeft} top = {ourTop} />
         </div>
       </div>
     );
@@ -71,5 +83,3 @@ export default DropTarget(ItemTypes.Item, destinationTarget, (connect, monitor) 
   isOver: monitor.isOver(),
   canDrop: monitor.canDrop()
 }))(Destination);
-
-// export default DragDropContext(HTML5Backend)(Destination);
