@@ -24,8 +24,7 @@ const destinationTarget = {
     const left = Math.round(item.left + delta.x);
     const top = Math.round(item.top + delta.y);
 
-    console.log(left);
-    // return { name: 'Destination' };
+    component.moveImg(item.id, left, top);
   }
 };
 
@@ -39,15 +38,29 @@ export default class Destination extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imgages: {
-        'a': { top: 20, left: 80, src: "./src/img/test1-banner.png"},
-        'b': { top: 180, left: 20, src: "./src/img/test2-banner.png"}
+      images: {
+        'img1': { top: 20, left: 80, src: './src/img/test1-banner.png'},
+        'img2': { top: 180, left: 20, src: './src/img/test2-banner.png'}
       }
     };
   }
 
+  moveImg(id, left, top) {
+    this.setState(update(this.state, {
+      images: {
+        [id]: {
+          $merge: {
+            left: left,
+            top: top
+          }
+        }
+      }
+    }));
+  }
+
   render() {
     const { canDrop, isOver, connectDropTarget } = this.props;
+    const {images} = this.state
     const isActive = canDrop && isOver;
 
     let ourLeft = 20;
@@ -71,7 +84,16 @@ export default class Destination extends Component {
           }
         </div>
         <div>
-          <Source id = {ourId} src = {ourSrc} left = {ourLeft} top = {ourTop} />
+          {Object.keys(images).map(key => {
+            const { src, left, top } = images[key];
+            return (
+              <Source src={src}
+                   id={key}
+                   left={left}
+                   top={top}
+                   key = {key} />
+            );
+          })}
         </div>
       </div>
     );

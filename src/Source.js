@@ -4,24 +4,13 @@ import { DragSource } from 'react-dnd';
 
 const style = {
   position: 'absolute',
-  cursor: 'move',
+  cursor: 'move'
 };
 
 const imgSource = {
   beginDrag(props) {
     const {id, src, left, top } = props;
     return {id, src, left, top };
-  },
-
-  endDrag(props, monitor) {
-    const item = monitor.getItem();
-    // const dropResult = monitor.getDropResult();
-    //
-    // if (dropResult) {
-    //   window.alert( // eslint-disable-line no-alert
-    //     `You dropped ${item.name} into ${dropResult.name}!`
-    //   );
-    // }
   }
 };
 
@@ -39,13 +28,12 @@ export default class Source extends Component {
 
     return (
       connectDragSource(
-        <img id = {{id}} src = {{src}} style = {{ ...style, left, top }} />
+        <img id = {id} src = {src} style = {{ ...style, left, top }} key = {id} />
       )
     );
   }
 }
 
 export default DragSource(ItemTypes.Item, imgSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  connectDragSource: connect.dragSource()
 }))(Source);
