@@ -38,21 +38,16 @@ export default class Destination extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: {
-        'img1': { top: 20, left: 80, src: './src/img/test1-banner.png'},
-        'img2': { top: 180, left: 20, src: './src/img/test2-banner.png'}
-      }
+      image: { top: 20, left: 80, src: './src/img/test1-banner.png'}
     };
   }
 
   moveImg(id, left, top) {
     this.setState(update(this.state, {
-      images: {
-        [id]: {
-          $merge: {
-            left: left,
-            top: top
-          }
+      image: {
+        $merge: {
+          left: left,
+          top: top
         }
       }
     }));
@@ -60,7 +55,7 @@ export default class Destination extends Component {
 
   render() {
     const { canDrop, isOver, connectDropTarget } = this.props;
-    const {images} = this.state
+    const {image} = this.state
     const isActive = canDrop && isOver;
 
     let ourLeft = 20;
@@ -84,16 +79,12 @@ export default class Destination extends Component {
           }
         </div>
         <div>
-          {Object.keys(images).map(key => {
-            const { src, left, top } = images[key];
-            return (
-              <Source src={src}
-                   id={key}
-                   left={left}
-                   top={top}
-                   key = {key} />
-            );
-          })}
+
+        <Source src={image.src}
+             left={image.left}
+             top={image.top}
+             key = {ourLeft} />
+
         </div>
       </div>
     );
